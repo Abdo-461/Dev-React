@@ -4,27 +4,33 @@ import './index.css';
 
 //component to create squares
 class Square extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            value: null,
-        };
-    }
     render() {
       return (
         <button className="square" 
-          onClick={() => {
-            this.setState({value: 'X'})
-        }}>
-          {this.state.value}
+          onClick={() => this.props.onClick()  
+        }>
+          {this.props.value}
         </button>
       );
     }
   }
-  //component create the board
+  //component to create the board
   class Board extends React.Component {
+    //baord's intial state to contain an array of 9 nulls correspoding to 9 squares
+    constructor(props){
+        super(props);
+        this.state = {
+            squares: Array(9).fill(null),
+        };
+    }
+    //render contents inside the squares
     renderSquare(i) {
-      return <Square value={i} />;
+      return <Square 
+            //assign intial state of squares
+            value={this.state.squares[i]} 
+            //handle clicks on square
+            onClick={() => this.handleClick(i)}
+      />;
     }
   
     render() {
