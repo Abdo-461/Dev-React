@@ -2,14 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-//component to create squares
+//function component to create squares
 class Square extends React.Component {
     render() {
       return (
-        <button className="square" 
-          onClick={() => this.props.onClick()  
-        }>
-          {this.props.value}
+        <button className="square" onClick={this.props.onClick}>
+                {this.props.value} 
         </button>
       );
     }
@@ -21,8 +19,25 @@ class Square extends React.Component {
         super(props);
         this.state = {
             squares: Array(9).fill(null),
+            //boolean to determin which player should go next
+            xIsNext: true,
         };
     }
+    //handle click definition
+    handleClick(i){
+      //slice board
+      const squares = this.state.squares.slice();
+      //check if user already clicked square
+      if(squares[i]) return;
+      //assign X on square
+      squares[i] = this.state.xIsNext ? 'X' : 'O';
+      //store state of squares
+      this.setState({
+        squares: squares,
+        xIsNext: !this.state.xIsNext,
+        });
+    }
+
     //render contents inside the squares
     renderSquare(i) {
       return <Square 
@@ -32,10 +47,20 @@ class Square extends React.Component {
             onClick={() => this.handleClick(i)}
       />;
     }
-  
+    //draws baord
     render() {
-      const status = 'Next player: X';
-  
+      //call calculate winner in board component
+      const winner = calculateWinner(this.state.squares);
+      //determine a winner or next player
+      let status;
+      if(winner){
+        status = 'Winner:' +winner;
+        
+      }
+      else{
+        status = 'Next Player:' +(this.state.xIsNext ? 'X' : 'O');
+      }
+      //return the board
       return (
         <div>
           <div className="status">{status}</div>
@@ -80,7 +105,29 @@ class Square extends React.Component {
   
   //render the game under the id root
   ReactDOM.render(
-    <Game />,
+     <Game />,
     document.getElementById('root')
   );
   
+//calculate winner
+function calculateWinner(squares){
+  //values of lines
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for(let i=0; i<lines.length; i++ ){
+      const[a,b,c] = lines[i];
+      if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
+        return squares[a];
+      }
+  }
+  return null;
+}
