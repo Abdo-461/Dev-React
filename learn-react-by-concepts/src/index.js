@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import ReactDOM  from 'react-dom';
 import './index.css';
 //import App from './App';
@@ -149,71 +149,142 @@ import * as serviceWorker from './serviceWorker';
 //conditional rendering
 
 //display if user is logged in
-function UserGreeting(props){
-  return <h1>Welcoime back bitch</h1>
-}
-//display if user is Not logged in
-function GuestGreeting(props){
-  return <h1>sign in bitch</h1>
-}
-//login button
-function UserLogIn(props){
-  return <button>LogIn</button>
-}
-//logout button
-function UserLogOut(props){
-  return <button>LogOut</button>
+// function UserGreeting(props){
+//   return <h1>Welcoime back bitch</h1>
+// }
+// //display if user is Not logged in
+// function GuestGreeting(props){
+//   return <h1>You need to sign in</h1>
+// }
+// //login button
+// function UserLogIn(props){
+//   return <button>Log In</button>
+// }
+// //logout button
+// function UserLogOut(props){
+//   return <button>LogOut</button>
+// }
+
+// //class to handle what appears on the screen during different states
+// class LogInControl extends React.Component{
+//   constructor(props){
+//     super(props);
+//     this.handleLogIn = this.handleLogIn.bind(this);
+//     this.handleLogOut = this.handleLogOut.bind(this);
+//     this.state = {isLoggedIn: false};
+//   }
+
+//   handleLogIn(){
+//     this.handleLogIn({isLoggedIn: true})
+//   }
+//   handleLogOut(){
+//     this.handleLogOut({isLoggedIn: false});
+//   }
+
+//   render(){
+//     const isLoggedIn = this.state.isLoggedIn;
+//     let button;
+//     if(isLoggedIn){
+//        button = <UserLogOut></UserLogOut>
+//     }
+//     else{
+//        button = <UserLogIn></UserLogIn>
+//     }
+
+//     return(
+//       <div>
+//         <Greeting isLoggedIn={isLoggedIn}></Greeting>
+//         {button}
+//       </div>
+//     );
+//   }
+// }
+
+// // //display appropriate greeting
+// function Greeting(props){
+//   const isLoggedIn = props.isLoggedIn;
+//   if(isLoggedIn){
+//     return <UserGreeting></UserGreeting>
+//   }
+//   else{
+//     return <GuestGreeting></GuestGreeting>
+//   }
+// }
+
+//conditional rendering with && / ? operator
+// function MailBox(props){
+//   const message = props.message;
+//   return(
+//     <div>
+//       <h1>hello</h1>
+//         {message.length > 0 ? 
+//         <h2>you have {message.length} unread message</h2> : <h2>No messages</h2>}
+
+//         <h1>hello</h1>
+//         {message.length > 0 && 
+//         <h2>you have {message.length} unread message</h2>}
+//     </div>
+//     //--------------------//
+    
+//   );
+// }
+// const messages = [];
+// class Test extends React.Component{
+
+//   state = {
+//     test: true,
+//   }
+
+//   handleClick = () =>{
+//     this.setState({
+//       test : !this.state.test
+//     })
+//   }
+
+//   render(){
+//     return(
+//       <div>
+//         <button onClick ={this.handleClick}>click here</button>
+//         {this.state.test ? <p>state is true</p> : <p>State is false</p>}
+//       </div>
+//     )
+//   }
+// }
+
+//preventing component from rendering
+function WarningBanner(props){
+  if(!props.warn){
+    return <h2> ur places! ^^^^</h2>;
+  }
+
+  return(
+    <div className="warning">ur list is empty! create ya ga7ba!</div>
+  );
 }
 
-//class to handle what appears on the screen during different states
-class LogInControl extends React.Component{
+class Page extends React.Component{
   constructor(props){
     super(props);
-    this.handleLogIn = this.handleLogIn.bind(this);
-    this.handleLogOut = this.handleLogOut.bind(this);
-    this.state = {isLoggedIn: true};
+    this.state = {showWarning : false};
+    //this.handleToggle = this.handleToggle.bind(this);
   }
 
-  handleLogIn(){
-    this.handleLogIn({isLoggedIn: true})
-  }
-  handleLogOut(){
-    this.handleLogOut({isLoggedIn: false});
-  }
-
+  // handleToggle(){
+  //   this.setState(state =>({
+  //     showWarning : !this.state.showWarning
+  //   }));
+  // }
   render(){
-    const isLoggedIn = this.state.isLoggedIn;
-    let button;
-    if(isLoggedIn){
-       button = <UserLogOut></UserLogOut>
-    }
-    else{
-       button = <UserLogIn></UserLogIn>
-    }
-
     return(
       <div>
-        <Greeting isLoggedIn={isLoggedIn}></Greeting>
-        {button}
+        <WarningBanner warn={this.state.showWarning}></WarningBanner>
+        {/* <button onClick={this.handleToggle}>
+          {this.state.showWarning ? 'Hide': 'Show'}
+        </button> */}
       </div>
-    );
+    )
   }
 }
-
-
-//display appropriate greeting
-function Greeting(props){
-  const isLoggedIn = props.isLoggedIn;
-  if(isLoggedIn){
-    return <UserGreeting></UserGreeting>
-  }
-  else{
-    return <GuestGreeting></GuestGreeting>
-  }
-}
-
-
-
 
 ReactDOM.render(
   // <React.StrictMode>
@@ -223,7 +294,10 @@ ReactDOM.render(
   //<Clock></Clock>,
   //<Toggle></Toggle>,
   //<Greeting isLoggedIn={true}></Greeting>,
-  <LogInControl></LogInControl>,
+  //<LogInControl></LogInControl>,
+  //<MailBox message ={messages}></MailBox>,
+  //<Test></Test>,
+  <Page></Page>,
   document.getElementById('root')
 );
 
