@@ -69,48 +69,161 @@ import * as serviceWorker from './serviceWorker';
 //   }
 // }
 
+//test prevent default
+// function activateLasers(){
+//   function handleClick(e){
+//     e.preventDefault();
+//     console.log('clicked');
+//   }
+
+//   return(
+//     <a href="#" onClick={handleClick}>
+//       click me
+//     </a>
+//   )
+// }
+
 //class clock that defines how a clock looks like
-class Clock extends React.Component{
-  //constructor to build intial state of a clock
+// class Clock extends React.Component{
+//   //constructor to build intial state of a clock
+//   constructor(props){
+//     super(props);
+//     this.state = {date: new Date()};
+//   }
+//   //life cycle methods
+//   //start of teh component life cycle
+//   componentDidMount(){
+//       this.timerID = setInterval(
+//         () => this.tick(),
+//         1000
+//       );
+//   }
+//   //end of the component life cycle
+//   componentWillUnmount(){
+//     clearInterval(this.timerID);
+//   }
+//   //set clock state every second
+//   tick(){
+//     this.setState({
+//       date : new Date()
+//     });
+//   }
+//   //render the clock
+//   render(){
+//     return( 
+//         <div>
+//           <h1>Hello bitch!!!</h1>
+//           <h2> Time is :{this.state.date.toLocaleTimeString()}</h2>
+//           <button onClick={activateLasers}>activatelasers</button>
+//         </div>
+//     );
+//   }
+// }
+
+//create a button to toggle on and off
+// class Toggle extends React.Component{
+//   constructor(props){
+//     super(props);
+//     this.state = {isToggleOn: true};
+
+//     //make 'this' work in teh call back
+//     this.handleClick = this.handleClick.bind(this);
+//   }
+//   //button handeler
+//   handleClick(){
+//     this.setState(state => ({
+//       isToggleOn: !state.isToggleOn
+//     }));
+//   }
+//   //render on the page
+//   render(){
+//     return(
+//       <button onClick={this.handleClick}>
+//         {this.state.isToggleOn ? 'On': 'Off'}
+//       </button>
+//     )
+//   }
+// }
+
+
+//conditional rendering
+
+//display if user is logged in
+function UserGreeting(props){
+  return <h1>Welcoime back bitch</h1>
+}
+//display if user is Not logged in
+function GuestGreeting(props){
+  return <h1>sign in bitch</h1>
+}
+//login button
+function UserLogIn(props){
+  return <button>LogIn</button>
+}
+//logout button
+function UserLogOut(props){
+  return <button>LogOut</button>
+}
+
+//class to handle what appears on the screen during different states
+class LogInControl extends React.Component{
   constructor(props){
     super(props);
-    this.state = {date: new Date()};
+    this.handleLogIn = this.handleLogIn.bind(this);
+    this.handleLogOut = this.handleLogOut.bind(this);
+    this.state = {isLoggedIn: true};
   }
-  //life cycle methods
-  //start of teh component life cycle
-  componentDidMount(){
-      this.timerID = setInterval(
-        () => this.tick(),
-        1000
-      );
+
+  handleLogIn(){
+    this.handleLogIn({isLoggedIn: true})
   }
-  //end of the component life cycle
-  componentWillUnmount(){
-    clearInterval(this.timerID);
+  handleLogOut(){
+    this.handleLogOut({isLoggedIn: false});
   }
-  //set clock state every second
-  tick(){
-    this.setState({
-      date : new Date()
-    });
-  }
-  //render the clock
+
   render(){
-    return( 
-        <div>
-          <h1>Hello bitch!!!</h1>
-          <h2> Time is :{this.state.date.toLocaleTimeString()}</h2>
-        </div>
+    const isLoggedIn = this.state.isLoggedIn;
+    let button;
+    if(isLoggedIn){
+       button = <UserLogOut></UserLogOut>
+    }
+    else{
+       button = <UserLogIn></UserLogIn>
+    }
+
+    return(
+      <div>
+        <Greeting isLoggedIn={isLoggedIn}></Greeting>
+        {button}
+      </div>
     );
   }
 }
+
+
+//display appropriate greeting
+function Greeting(props){
+  const isLoggedIn = props.isLoggedIn;
+  if(isLoggedIn){
+    return <UserGreeting></UserGreeting>
+  }
+  else{
+    return <GuestGreeting></GuestGreeting>
+  }
+}
+
+
+
 
 ReactDOM.render(
   // <React.StrictMode>
   //   <App />
   // </React.StrictMode>,
   //<App></App>,
-  <Clock></Clock>,
+  //<Clock></Clock>,
+  //<Toggle></Toggle>,
+  //<Greeting isLoggedIn={true}></Greeting>,
+  <LogInControl></LogInControl>,
   document.getElementById('root')
 );
 
